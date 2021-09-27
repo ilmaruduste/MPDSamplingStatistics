@@ -7,11 +7,10 @@ class InputDataSelector:
         self.data_types = data_types
         self.table_names = table_names
         self.indicators = indicators
-        self.table = None
         self.query = None
 
     def create_sql_query(self):
         return True
 
-    def create_pandas_df_from_query(self):
-        return False
+    def create_pandas_df_from_query(self, connection):
+        return pandas.read_sql_query(self.query, connection)

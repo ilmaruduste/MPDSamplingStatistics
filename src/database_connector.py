@@ -8,8 +8,13 @@ class DatabaseConnector:
         self.db_username = conf['DATABASE CONNECTION']['DB USERNAME']
         self.db_password = conf['DATABASE CONNECTION']['DB PASSWORD']
         self.db_port = conf['DATABASE CONNECTION']['DB PORT']
-        self.db_connector = None
+        self.db_connection = None
 
-    
-
-    
+    def connect_to_db(self):
+        self.db_connection = psycopg2.connect(
+            host = self.db_host,
+            dbname = self.db_name,
+            user = self.db_username,
+            password = self.db_password,
+            port = self.db_port
+            )

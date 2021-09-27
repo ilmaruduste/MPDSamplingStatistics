@@ -10,8 +10,8 @@ class InputDataSelector:
         self.table = None
         self.query = None
 
-    def createSQLQuery(self):
+    def create_sql_query(self):
         return True
 
-    def createPandasFromQuery(self):
+    def create_pandas_df_from_query(self):
         return False

@@ -1,0 +1,19 @@
+DATABASE CONNECTION:
+  DB HOST: ''
+  DB NAME: ''
+  DB NAME: ''
+  DB USERNAME: ''
+  DB PASSWORD: ''
+  DB PORT: ''
+
+INPUT DATA:
+  DATA SCHEMAS: [ee_elisa]            # The first schema here is the one the other schemas are compared to.
+  CORRESPONDING TYPES: ['100% data']  # Type of sample/compression on data. E.g. '5% data' or '100% PIPE1 data'
+  TABLE NAMES: []
+  INDICATORS: []
+
+OUTPUT DATA:
+  FOLDER: './output'
+  FILENAME: 'dummy.csv'
+  TYPE: []                  # Long or wide or both
+

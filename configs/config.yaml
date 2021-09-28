@@ -7,7 +7,7 @@ DATABASE CONNECTION:
   DB PORT: ''
 
 INPUT DATA:
-  DATA SCHEMAS: [ee_elisa]            # The first schema here is the one the other schemas are compared to.
+  DATA SCHEMAS: [ee_elisa]            # The first schema here is the one the other schemas are compared to. NB! There should be as many Data Schemas as corresponding types!
   CORRESPONDING TYPES: ['100% data']  # Type of sample/compression on data. E.g. '5% data' or '100% PIPE1 data'
   TABLE NAMES: []
   INDICATORS: []

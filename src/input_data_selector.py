@@ -2,24 +2,32 @@ import pandas
 
 class InputDataSelector:
     
-    def __init__(self, conf, table_name):
+    def __init__(self):
+        self.data_schemas = None
+        self.data_types = None
+        self.indicators = None
+        self.table_name = None
+        self.query = None
+
+    def load_conf(self, conf):
         self.data_schemas = conf["INPUT DATA"]["DATA SCHEMAS"]
         self.data_types = conf["INPUT DATA"]["CORRESPONDING TYPES"]
         self.indicators = conf["INPUT DATA"]["INDICATORS"]
+
+    def load_table_name(self, table_name):
         self.table_name = table_name          # We have one specific table name per InputDataSelector instance
-        self.query = None
 
     def create_sql_query(self):
         sql_query = ""
 
-        for i, schema, type in enumerate(zip(self.data_schemas, self.data_types)):
+        for i, (schema, type) in enumerate(zip(self.data_schemas, self.data_types)):
             sql_query += '''SELECT *, "{ftype}" AS data_type FROM {fschema}.{ftablename}\n'''.format(fschema = schema, ftype = type, ftablename = self.table_name)
 
             if (i < len(self.data_schemas) - 1):
                 sql_query += "UNION\n"
 
         self.query = sql_query
-        
+
     def get_sql_query(self):
         return self.query
 

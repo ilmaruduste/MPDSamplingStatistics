@@ -12,8 +12,8 @@ class TestInputDataSelection(unittest.TestCase):
         self.ids = input_data_selector.InputDataSelector()
 
     def test_load_config(self):
-        conf = yaml.safe_load(open("./tests/input_data_selection/test_input_data_selection_conf.yaml", "r"))
-        self.ids.load_conf(conf)
+        with yaml.safe_load(open("./test/configs/test_input_data_selection_conf.yaml", "r")) as conf:
+            self.ids.load_conf(conf)
         self.assertEqual(self.ids.data_schemas[0], "dummy_schema")
 
     def test_load_tblname(self):

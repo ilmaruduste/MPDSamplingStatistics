@@ -1,0 +1,18 @@
+DATABASE CONNECTION:
+  DB HOST: 'localhost'
+  DB NAME: 'dummy_name'
+  DB USERNAME: 'dummy_user'
+  DB PASSWORD: 'dummy_password'
+  DB PORT: '5432'
+
+INPUT DATA:
+  DATA SCHEMAS: []            # The first schema here is the one the other schemas are compared to. NB! There should be as many Data Schemas as corresponding types!
+  CORRESPONDING TYPES: ['']  # Type of sample/compression on data. E.g. '5% data' or '100% PIPE1 data'
+  TABLE NAMES: []
+  INDICATORS: []
+
+OUTPUT DATA:
+  FOLDER: ''
+  FILENAME: ''
+  TYPE: []                  # Long or wide or both
+

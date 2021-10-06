@@ -1,3 +1,4 @@
+from logging import log
 import pandas
 from scipy import stats
 import pandas as pd
@@ -68,7 +69,7 @@ class ResultsRowCreator:
         # This function assumes that self.joined_data exists (i.e. join_orig_comp_data() has been done)
         # The function returns an array
         # First value is MAPE - Mean Absolute Percentage Error
-        # The second value is MAD - Median Absolute Deviation
+        # The second value is MAD - Median Absolute Deviation for the errors
         x, y = indicator_name + "_x", indicator_name + "_y"
 
         if (filter_name == None and filter_value == None):
@@ -77,6 +78,20 @@ class ResultsRowCreator:
             percentage_errors = np.array([abs(orig_ind - comp_ind)/orig_ind*100 for orig_ind, comp_ind in self.get_joined_data_indicators(x, y, filter_name, filter_value)])
         
         return np.round([percentage_errors.mean(), stats.median_abs_deviation(percentage_errors)], round_decimal_places)
+
+    def calculate_absolute_logarithmic_error_metrics(self, indicator_name, filter_name = None, filter_value = None, round_decimal_places = 4):
+        # This function assumes that self.joined_data exists (i.e. join_orig_comp_data() has been done)
+        # The function returns an array
+        # First value is MALE - Mean Absolute Logarithmic Error
+        # The second value is MAD - Median Absolute Deviation for the errors
+        x, y = indicator_name + "_x", indicator_name + "_y"
+
+        if (filter_name == None and filter_value == None):
+            logarithmic_errors = np.array([abs(np.log10((orig_ind + 1)/(comp_ind + 1))) for orig_ind, comp_ind in self.get_joined_data_indicators(x, y)])
+        else:
+            logarithmic_errors = np.array([abs(np.log10((orig_ind + 1)/(comp_ind + 1))) for orig_ind, comp_ind in self.get_joined_data_indicators(x, y, filter_name, filter_value)])
+        
+        return np.round([logarithmic_errors.mean(), stats.median_abs_deviation(logarithmic_errors)], round_decimal_places)
 
 
 class DomInbResultsRowCreator(ResultsRowCreator):

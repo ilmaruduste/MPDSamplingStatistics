@@ -93,6 +93,20 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.joined_data['dummy_indicator_y'] = [4,20,30,100,120]
         self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', filter_name = 'dummy_category', filter_value = 1)[1], 0)
 
+    def test_mean_ale_0(self):
+        self.rrc.joined_data['dummy_indicator_y'] = [10,20,30,50,60]
+        self.assertEqual(self.rrc.calculate_absolute_logarithmic_error_metrics('dummy_indicator')[0], 0)
+    
+    def test_mean_ale_1(self):
+        self.rrc.joined_data['dummy_indicator_x'] = [9,19,29,49,59]
+        self.rrc.joined_data['dummy_indicator_y'] = [99,199,299,499,599]
+        self.assertEqual(self.rrc.calculate_absolute_logarithmic_error_metrics('dummy_indicator')[0], 1)
+    
+    def test_mad_ale_05(self):
+        self.rrc.joined_data['dummy_indicator_x'] = [9,19,29,49,59]
+        self.rrc.joined_data['dummy_indicator_y'] = [9,19,93,499,599]
+        self.assertAlmostEqual(self.rrc.calculate_absolute_logarithmic_error_metrics('dummy_indicator')[1], 0.5, places = 2)
+
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     # runner.run(suite())

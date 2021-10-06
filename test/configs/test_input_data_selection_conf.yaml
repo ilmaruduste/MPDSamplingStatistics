@@ -14,5 +14,5 @@ INPUT DATA:
 OUTPUT DATA:
   FOLDER: './output'
   FILENAME: 'dummy.csv'
-  TYPE: []                  # Long or wide or both
+  TYPE: ['wide', 'long']                  # Long or wide or both
 

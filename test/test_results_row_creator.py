@@ -8,17 +8,25 @@ import pandas as pd
 
 class TestResultsRowCreator(unittest.TestCase):
     def setUp(self):
-        self.rrc = results_row_creator.ResultsRowCreator(
-            original_data = pd.DataFrame(
+        original_df = pd.DataFrame(
                 {'dummy_date':['2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-01-01','2021-02-01','2021-01-01'],
                 'dummy_category':[1,1,1,1,2,2,3], 
-                'dummy_indicator':[10,20,30,40,50,60,70]}),
-            comparison_data = pd.DataFrame(
+                'dummy_indicator':[10,20,30,40,50,60,70]})
+
+        comparison_df = pd.DataFrame(
                 {'dummy_date':['2021-01-01', '2021-02-01', '2021-03-01', '2021-01-01','2021-02-01'],
                 'dummy_category':[1,1,1,2,2],
-                'dummy_indicator': [10,20,30,50,70]}))
-        self.dirrc = results_row_creator.DomInbResultsRowCreator(None, None)
-        self.outbrrc = results_row_creator.OutbResultsRowCreator(None, None)
+                'dummy_indicator': [10,20,30,50,70]})
+
+        self.rrc = results_row_creator.ResultsRowCreator(
+            original_data = original_df,
+            comparison_data = comparison_df)
+        self.dirrc = results_row_creator.DomInbResultsRowCreator(
+            original_data = original_df,
+            comparison_data = comparison_df)
+        self.outbrrc = results_row_creator.OutbResultsRowCreator(
+            original_data = original_df,
+            comparison_data = comparison_df)
 
         join_categories = ['dummy_date', 'dummy_category']
         result = pd.DataFrame({
@@ -106,6 +114,50 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.joined_data['dummy_indicator_x'] = [9,19,29,49,59]
         self.rrc.joined_data['dummy_indicator_y'] = [9,19,93,499,599]
         self.assertAlmostEqual(self.rrc.calculate_absolute_logarithmic_error_metrics('dummy_indicator')[1], 0.5, places = 2)
+
+    def test_dominb_wide_statistics(self):
+        join_categories = ['dummy_date', 'dummy_category']
+
+        original_df = pd.DataFrame(
+            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-01-01','2021-02-01','2021-01-01', '2021-02-01'],
+            'dummy_category':[0,1,1,1,1,2,2,3,3], 
+            'dummy_indicator':[5,10,20,30,40,50,60,70,80]})
+
+        comparison_df = pd.DataFrame(
+            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-01-01','2021-02-01', '2021-01-01', '2021-02-01'],
+            'dummy_category':[0,1,1,1,2,2,3,3],
+            'dummy_indicator': [5,10,20,30,50,70,80, 90]})
+        
+        self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
+        # print(f"self.dirrc.original_data: {self.dirrc.original_data}")
+        # print(f"self.dirrc.comparison_data: {self.dirrc.comparison_data}")
+        # print(f"self.dirrc.join_categories: {self.dirrc.join_categories}")
+        # print(f"self.dirrc.joined_data: {self.dirrc.joined_data}")
+        # print(f"manually joined data: {pd.merge(self.dirrc.original_data, self.dirrc.comparison_data, how = 'inner', on = join_categories)}")
+        print(self.dirrc.get_row_of_statistics_wide('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category'))
+
+    def test_dominb_long_statistics(self):
+        join_categories = ['dummy_date', 'dummy_category']
+
+        original_df = pd.DataFrame(
+            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-01-01','2021-02-01','2021-01-01', '2021-02-01'],
+            'dummy_category':[0,1,1,1,1,2,2,3,3], 
+            'dummy_indicator':[5,10,20,30,40,50,60,70,80]})
+
+        comparison_df = pd.DataFrame(
+            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-01-01','2021-02-01', '2021-01-01', '2021-02-01'],
+            'dummy_category':[0,1,1,1,2,2,3,3],
+            'dummy_indicator': [5,10,20,30,50,70,80, 90]})
+        
+        lau_level_array = [0,1,2,3]
+
+        self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
+        # print(f"self.dirrc.original_data: {self.dirrc.original_data}")
+        # print(f"self.dirrc.comparison_data: {self.dirrc.comparison_data}")
+        # print(f"self.dirrc.join_categories: {self.dirrc.join_categories}")
+        # print(f"self.dirrc.joined_data: {self.dirrc.joined_data}")
+        # print(f"manually joined data: {pd.merge(self.dirrc.original_data, self.dirrc.comparison_data, how = 'inner', on = join_categories)}")
+        print(self.dirrc.get_row_of_statistics_long('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category', lau_level_array))
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()

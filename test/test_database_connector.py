@@ -12,8 +12,9 @@ class TestDatabaseConnector(unittest.TestCase):
         self.dc = database_connector.DatabaseConnector()
 
     def test_load_config(self):
-        with yaml.safe_load(open("./test/configs/test_database_connector_conf.yaml", "r")) as conf:
-           self.dc.load_conf(conf)
+        with open("./test/configs/test_database_connector_conf.yaml", "r") as file:
+            conf = yaml.safe_load(file)
+            self.dc.load_conf(conf)
         self.assertEqual(self.dc.db_host, "localhost")
         self.assertEqual(self.dc.db_name, "dummy_name")
 

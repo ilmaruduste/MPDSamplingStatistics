@@ -9,12 +9,9 @@ import time
 
 class TestInputDataSelection(unittest.TestCase):
     def setUp(self):
-        self.ids = input_data_selector.InputDataSelector()
-
-    def test_load_config(self):
-        with yaml.safe_load(open("./test/configs/test_input_data_selection_conf.yaml", "r")) as conf:
-            self.ids.load_conf(conf)
-        self.assertEqual(self.ids.data_schemas[0], "dummy_schema")
+        with open("./test/configs/test_input_data_selection_conf.yaml", "r") as file:
+            conf = yaml.safe_load(file)
+            self.ids = input_data_selector.InputDataSelector(conf)
 
     def test_load_tblname(self):
         self.ids.load_table_name("dummy")

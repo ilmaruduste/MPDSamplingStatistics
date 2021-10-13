@@ -2,14 +2,7 @@ import pandas
 
 class InputDataSelector:
     
-    def __init__(self):
-        self.data_schemas = None
-        self.data_types = None
-        self.indicators = None
-        self.table_name = None
-        self.query = None
-
-    def load_conf(self, conf):
+    def __init__(self, conf):
         self.data_schemas = conf["INPUT DATA"]["DATA SCHEMAS"]
         self.data_types = conf["INPUT DATA"]["CORRESPONDING TYPES"]
         self.indicators = conf["INPUT DATA"]["INDICATORS"]

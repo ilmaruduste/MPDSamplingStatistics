@@ -20,3 +20,4 @@ class DatabaseConnector:
             password = self.db_password,
             port = self.db_port
             )
+        self.cursor = self.db_connection.cursor()

@@ -10,6 +10,10 @@ INPUT DATA:
   CORRESPONDING TYPES: ['100% data']  # Type of sample/compression on data. E.g. '5% data' or '100% PIPE1 data'
   TABLE NAMES: []
   INDICATORS: []
+  DATA SOURCE: 'DomesticInbound' # Options 'DomesticInbound' and 'Outbound'
+  JOIN CATEGORIES: ['dummy_date', 'dummy_category']
+  FILTER NAME: 'lau_level' 
+  FILTER VALUES: [0,1,2,3]
 
 OUTPUT DATA:
   FOLDER: './output'

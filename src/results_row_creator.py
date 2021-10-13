@@ -1,5 +1,3 @@
-from logging import log
-import pandas
 from scipy import stats
 import pandas as pd
 import numpy as np
@@ -99,19 +97,6 @@ class ResultsRowCreator:
         
         return np.round([logarithmic_errors.mean(), stats.median_abs_deviation(logarithmic_errors)], round_decimal_places)
 
-    # def is_joined_data_empty(self):
-    #     if self.joined_data == None:
-    #         return True
-    #     else:
-    #         return False
-
-    # def fill_joined_data_if_needed(self):
-    #     if self.is_joined_data_empty():
-    #         self.joined_data = self.join_orig_comp_data(self.join_categories)
-    #     else:
-    #         pass
-
-
 class DomInbResultsRowCreator(ResultsRowCreator):
 
     def __init__(self, original_data = None, comparison_data = None, join_categories = None):
@@ -119,11 +104,11 @@ class DomInbResultsRowCreator(ResultsRowCreator):
 
     def get_row_of_statistics_wide(self, table_name, data_type, indicator_name, filter_name):
         combination_coverage_array = [self.calculate_combination_coverage(filter_name, lau_level_int) for lau_level_int in range(1,4)]
-        ks_test_array = [self.calculate_ks_test(indicator_name, filter_name, lau_level_int) for lau_level_int in range(1,4)]
-        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name, filter_name, lau_level_int) for lau_level_int in range(0,4)]
-        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name, filter_name, lau_level_int) for lau_level_int in range(0,4)]
-        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name, filter_name, lau_level_int) for lau_level_int in range(0,4)]).T
-        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name, filter_name, lau_level_int) for lau_level_int in range(0,4)]).T
+        ks_test_array = [self.calculate_ks_test(indicator_name) for lau_level_int in range(1,4)]
+        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name) for lau_level_int in range(0,4)]
+        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name) for lau_level_int in range(0,4)]
+        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name) for lau_level_int in range(0,4)]).T
+        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name) for lau_level_int in range(0,4)]).T
         
         results_dict = {
             'table_name':table_name
@@ -200,3 +185,27 @@ class OutbResultsRowCreator(ResultsRowCreator):
 
     def __init__(self, original_data, comparison_data):
         super().__init__(original_data, comparison_data)
+
+    def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name, lau_level_array):
+        combination_coverage_array = self.calculate_combination_coverage()
+        ks_test_array = self.calculate_ks_test(indicator_name)
+        indicator_mean = self.calculate_original_indicator_mean(indicator_name)
+        indicator_mad = self.calculate_original_indicator_mad(indicator_name)
+        ape_metrics_array = np.array(self.calculate_absolute_percentage_error_metrics(indicator_name))
+        ale_metrics_array = np.array(self.calculate_absolute_logarithmic_error_metrics(indicator_name))
+
+        results_dict = {
+            'table_name': np.repeat([table_name], len(lau_level_array))
+            , 'data_type': np.repeat([data_type], len(lau_level_array))
+            , 'indicator': np.repeat([indicator_name], len(lau_level_array))
+            , 'lau_level': lau_level_array
+            , 'combination_coverage': combination_coverage_array
+            , 'ks_test_D': np.array(ks_test_array)[0]
+            , 'ks_test_p': np.array(ks_test_array)[1]
+            , 'indicator_mean': indicator_mean
+            , 'indicator_mad': indicator_mad
+            , 'APE_mean': ape_metrics_array[0]
+            , 'APE_mad': ape_metrics_array[1]
+            , 'ALE_mean': ale_metrics_array[0]
+            , 'ALE_mad': ale_metrics_array[1]
+        }

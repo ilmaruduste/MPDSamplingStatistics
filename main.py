@@ -1,11 +1,14 @@
 # TODO: Implement functionality to choose config, defaulting to config.yaml
 
 import os
-from time import gmtime, strftime
+from time import localtime, strftime
 from src import results_processor
 from src import database_connector
 import argparse
 import yaml
+
+start_time = localtime()
+print(f"{strftime('%Y-%m-%d %H:%M:%S', start_time)} STARTING RESULTS COMPARISON SCRIPT")
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -22,7 +25,7 @@ with open(args.config_path, "r") as file:
     conf = yaml.safe_load(file)
 print("Config opened!")
 
-current_time = strftime("%Y%m%d_%H%M%S", gmtime())
+current_time = strftime("%Y%m%d_%H%M%S", localtime())
 filename = current_time + "_" + conf['OUTPUT DATA']['FILENAME']
 output_path = os.path.join(conf['OUTPUT DATA']['FOLDER'], filename)
 
@@ -39,3 +42,6 @@ with database_connector.DatabaseConnector() as connection:
     print("Results processed!")
     print(f"Outputting results comparison .csv file to {output_path}.")
     final_data.to_csv(output_path, sep = ';', index = False)
+
+end_time = localtime()
+print(f"{strftime('%Y-%m-%d %H:%M:%S', end_time)} ENDING RESULTS COMPARISON SCRIPT")

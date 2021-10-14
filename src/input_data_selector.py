@@ -14,7 +14,7 @@ class InputDataSelector:
         sql_query = ""
 
         for i, (schema, type) in enumerate(zip(self.data_schemas, self.data_types)):
-            sql_query += '''SELECT *, "{ftype}" AS data_type FROM {fschema}.{ftablename}\n'''.format(fschema = schema, ftype = type, ftablename = self.table_name)
+            sql_query += '''SELECT *, '{ftype}' AS data_type FROM {fschema}.{ftablename}\n'''.format(fschema = schema, ftype = type, ftablename = self.table_name)
 
             if (i < len(self.data_schemas) - 1):
                 sql_query += "UNION\n"
@@ -25,4 +25,4 @@ class InputDataSelector:
         return self.query
 
     def get_pandas_df_from_query(self, connection):
-        return pandas.read_sql_query(self.query, connection)
+        return pandas.read_sql_query(self.query, connection.db_connection)

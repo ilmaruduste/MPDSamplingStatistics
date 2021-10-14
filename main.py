@@ -24,7 +24,7 @@ print("Config opened!")
 
 current_time = strftime("%Y%m%d_%H%M%S", gmtime())
 filename = current_time + conf['OUTPUT DATA']['FILENAME']
-output_path = os.path.join(conf['OUTPUT DATA']['FOLDER'], )
+output_path = os.path.join(conf['OUTPUT DATA']['FOLDER'], filename)
 
 print(f"Connecting to database {conf['DATABASE CONNECTION']['DB NAME']}...")
 connection = database_connector.DatabaseConnector()

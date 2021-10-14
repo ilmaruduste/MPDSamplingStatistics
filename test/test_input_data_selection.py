@@ -19,30 +19,30 @@ class TestInputDataSelection(unittest.TestCase):
 
     def test_query_1_schema(self):
         self.ids.data_schemas = ["dummy_schema"]
-        self.ids.data_types = ["100% data"]
+        self.ids.data_types = ['100% data']
         self.ids.table_name = "dummy_table"
 
-        correct_query = '''SELECT *, "100% data" AS data_type FROM dummy_schema.dummy_table\n'''
+        correct_query = '''SELECT *, '100% data' AS data_type FROM dummy_schema.dummy_table\n'''
 
         self.ids.create_sql_query()
         self.assertEqual(self.ids.query, correct_query)
 
     def test_query_2_schemas(self):
         self.ids.data_schemas = ["dummy_schema1", "dummy_schema2"]
-        self.ids.data_types = ["100% data", "5% data"]
+        self.ids.data_types = ['100% data', '5% data']
         self.ids.table_name = "dummy_table"
 
-        correct_query = '''SELECT *, "100% data" AS data_type FROM dummy_schema1.dummy_table\nUNION\nSELECT *, "5% data" AS data_type FROM dummy_schema2.dummy_table\n'''
+        correct_query = '''SELECT *, '100% data' AS data_type FROM dummy_schema1.dummy_table\nUNION\nSELECT *, '5% data' AS data_type FROM dummy_schema2.dummy_table\n'''
 
         self.ids.create_sql_query()
         self.assertEqual(self.ids.query, correct_query)
 
     def test_query_multiple_schemas(self):
         self.ids.data_schemas = ["dummy_schema1", "dummy_schema2", "dummy_schema3"]
-        self.ids.data_types = ["100% data", "5% data", "1% data"]
+        self.ids.data_types = ['100% data', '5% data', "1% data"]
         self.ids.table_name = "dummy_table"        
 
-        correct_query = '''SELECT *, "100% data" AS data_type FROM dummy_schema1.dummy_table\nUNION\nSELECT *, "5% data" AS data_type FROM dummy_schema2.dummy_table\nUNION\nSELECT *, "1% data" AS data_type FROM dummy_schema3.dummy_table\n'''
+        correct_query = '''SELECT *, '100% data' AS data_type FROM dummy_schema1.dummy_table\nUNION\nSELECT *, '5% data' AS data_type FROM dummy_schema2.dummy_table\nUNION\nSELECT *, '1% data' AS data_type FROM dummy_schema3.dummy_table\n'''
 
         self.ids.create_sql_query()
         self.assertEqual(self.ids.query, correct_query)

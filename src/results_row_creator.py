@@ -76,11 +76,17 @@ class ResultsRowCreator:
         x, y = indicator_name + "_x", indicator_name + "_y"
 
         if (filter_name == None and filter_value == None):
-            percentage_errors = np.array([abs(orig_ind - comp_ind)/orig_ind*100 for orig_ind, comp_ind in self.get_joined_data_indicators(x, y)])
+            percentage_errors = np.array([self.calculate_percentage_error(orig_ind, comp_ind) for orig_ind, comp_ind in self.get_joined_data_indicators(x, y)])
         else:
-            percentage_errors = np.array([abs(orig_ind - comp_ind)/orig_ind*100 for orig_ind, comp_ind in self.get_joined_data_indicators(x, y, filter_name, filter_value)])
+            percentage_errors = np.array([self.calculate_percentage_error(orig_ind, comp_ind) for orig_ind, comp_ind in self.get_joined_data_indicators(x, y, filter_name, filter_value)])
         
-        return np.round([percentage_errors.mean(), stats.median_abs_deviation(percentage_errors)], round_decimal_places)
+        return np.round([np.nanmean(percentage_errors), stats.median_abs_deviation(percentage_errors[~np.isnan(percentage_errors)])], round_decimal_places)
+
+    def calculate_percentage_error(self, orig_ind, comp_ind):
+        try:
+            return abs(orig_ind - comp_ind)/orig_ind*100
+        except(ZeroDivisionError):
+            return np.NaN
 
     def calculate_absolute_logarithmic_error_metrics(self, indicator_name, filter_name = None, filter_value = None, round_decimal_places = 4):
         # This function assumes that self.joined_data exists (i.e. join_orig_comp_data() has been done)

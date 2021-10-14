@@ -31,7 +31,10 @@ class ResultsRowCreator:
                         self.get_filtered_joined_data(filter_name, filter_value)[indicator_name_y])
 
     def get_division_of_lengths_filters(self, filter_name, filter_value):
-        return get_len_filtered_data(self.comparison_data, filter_name, filter_value)/get_len_filtered_data(self.original_data, filter_name, filter_value)
+        try:
+            return get_len_filtered_data(self.comparison_data, filter_name, filter_value)/get_len_filtered_data(self.original_data, filter_name, filter_value)
+        except(ZeroDivisionError):
+            return np.NaN
 
     def calculate_combination_coverage(self, filter_name = None, filter_value = None, round_decimal_places = 4):
         if (filter_name == None and filter_value == None):
@@ -43,11 +46,14 @@ class ResultsRowCreator:
         # Returns a tuple. 
         # First value is the KS statistic (D)
         # Second value is the likelihood (p-value) that these two datas are from the same distribution
-        if (filter_name == None and filter_value == None):
-            return stats.kstest(self.original_data[indicator_name], self.comparison_data[indicator_name])
-        else:
-            return stats.kstest(self.get_filtered_orig_data(filter_name, filter_value)[indicator_name],
-                                self.comparison_data[self.comparison_data[filter_name] == filter_value][indicator_name])
+        try:
+            if (filter_name == None and filter_value == None):
+                return stats.kstest(self.original_data[indicator_name], self.comparison_data[indicator_name])
+            else:
+                return stats.kstest(self.get_filtered_orig_data(filter_name, filter_value)[indicator_name],
+                                    self.comparison_data[self.comparison_data[filter_name] == filter_value][indicator_name])
+        except(ValueError):
+            return (np.NaN, np.NaN)
 
     def calculate_original_indicator_mean(self, indicator_name, filter_name = None, filter_value = None, round_decimal_places = 4):
         if (filter_name == None and filter_value == None):

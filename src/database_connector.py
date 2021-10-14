@@ -5,6 +5,13 @@ class DatabaseConnector:
     def __init__(self):
         self.db_connection = None
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # Read here on why this block needs 4 arguments: https://stackoverflow.com/questions/1984325/explaining-pythons-enter-and-exit
+        return False
+
     def load_conf(self, conf):
         self.db_host = conf['DATABASE CONNECTION']['DB HOST']
         self.db_name = conf['DATABASE CONNECTION']['DB NAME']

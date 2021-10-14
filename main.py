@@ -27,15 +27,15 @@ filename = current_time + conf['OUTPUT DATA']['FILENAME']
 output_path = os.path.join(conf['OUTPUT DATA']['FOLDER'], filename)
 
 print(f"Connecting to database {conf['DATABASE CONNECTION']['DB NAME']}...")
-connection = database_connector.DatabaseConnector()
-connection.load_conf(conf)
-connection.connect_to_db()
-print("Connection to database established!")
+with database_connector.DatabaseConnector() as connection:
+    connection.load_conf(conf)
+    connection.connect_to_db()
+    print("Connection to database established!")
 
-print("Processing results...")
-results_processor = results_processor.ResultsProcessor(conf, connection)
-final_data = results_processor.process_results()
+    print("Processing results...")
+    results_processor = results_processor.ResultsProcessor(conf, connection)
+    final_data = results_processor.process_results()
 
-print("Results processed!")
-print(f"Outputting results comparison .csv file to {output_path}.")
-final_data.to_csv(output_path, sep = ';')
+    print("Results processed!")
+    print(f"Outputting results comparison .csv file to {output_path}.")
+    final_data.to_csv(output_path, sep = ';', index = False)

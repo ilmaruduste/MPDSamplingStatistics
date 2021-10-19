@@ -195,10 +195,10 @@ class DomInbResultsRowCreator(ResultsRowCreator):
 
 class OutbResultsRowCreator(ResultsRowCreator):
 
-    def __init__(self, original_data, comparison_data):
-        super().__init__(original_data, comparison_data)
+    def __init__(self, original_data = None, comparison_data = None, join_categories = None):
+        super().__init__(original_data, comparison_data, join_categories)
 
-    def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name, lau_level_array):
+    def get_row_of_statistics_long(self, table_name, data_type, indicator_name):
         combination_coverage_array = self.calculate_combination_coverage()
         ks_test_array = self.calculate_ks_test(indicator_name)
         indicator_mean = self.calculate_original_indicator_mean(indicator_name)
@@ -207,17 +207,18 @@ class OutbResultsRowCreator(ResultsRowCreator):
         ale_metrics_array = np.array(self.calculate_absolute_logarithmic_error_metrics(indicator_name))
 
         results_dict = {
-            'table_name': np.repeat([table_name], len(lau_level_array))
-            , 'data_type': np.repeat([data_type], len(lau_level_array))
-            , 'indicator': np.repeat([indicator_name], len(lau_level_array))
-            , 'lau_level': lau_level_array
-            , 'combination_coverage': combination_coverage_array
-            , 'ks_test_D': np.array(ks_test_array)[0]
-            , 'ks_test_p': np.array(ks_test_array)[1]
-            , 'indicator_mean': indicator_mean
-            , 'indicator_mad': indicator_mad
-            , 'APE_mean': ape_metrics_array[0]
-            , 'APE_mad': ape_metrics_array[1]
-            , 'ALE_mean': ale_metrics_array[0]
-            , 'ALE_mad': ale_metrics_array[1]
+            'table_name': [table_name]
+            , 'data_type': [data_type]
+            , 'indicator': [indicator_name]
+            , 'combination_coverage': [combination_coverage_array]
+            , 'ks_test_D': [np.array(ks_test_array)[0]]
+            , 'ks_test_p': [np.array(ks_test_array)[1]]
+            , 'indicator_mean': [indicator_mean]
+            , 'indicator_mad': [indicator_mad]
+            , 'APE_mean': [ape_metrics_array[0]]
+            , 'APE_mad': [ape_metrics_array[1]]
+            , 'ALE_mean': [ale_metrics_array[0]]
+            , 'ALE_mad': [ale_metrics_array[1]]
         }
+
+        return results_dict

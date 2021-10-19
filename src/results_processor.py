@@ -33,12 +33,19 @@ class ResultsProcessor:
                     if self.data_source == 'DomesticInbound':
                         rrc = results_row_creator.DomInbResultsRowCreator(original_data, comparison_data, self.join_categories)
                     else:
-                        rrc = results_row_creator.OutbResultsRowCreator()
+                        rrc = results_row_creator.OutbResultsRowCreator(original_data, comparison_data, self.join_categories)
 
-                    final_data_dict = self.merge_dict(
-                        final_data_dict, 
-                        rrc.get_row_of_statistics_long(table_name, data_type, indicator, self.filter_name, self.filter_values)
-                        )
+                    if self.filter_name == "":  
+                        final_data_dict = self.merge_dict(
+                            final_data_dict, 
+                            rrc.get_row_of_statistics_long(table_name, data_type, indicator)
+                            )
+                        
+                    else:
+                        final_data_dict = self.merge_dict(
+                            final_data_dict, 
+                            rrc.get_row_of_statistics_long(table_name, data_type, indicator, self.filter_name, self.filter_values)
+                            )
         
         return pd.DataFrame(final_data_dict)
 

@@ -12,12 +12,12 @@ class DatabaseConnector:
         # Read here on why this block needs 4 arguments: https://stackoverflow.com/questions/1984325/explaining-pythons-enter-and-exit
         return False
 
-    def load_conf(self, conf):
-        self.db_host = conf['DATABASE CONNECTION']['DB HOST']
-        self.db_name = conf['DATABASE CONNECTION']['DB NAME']
-        self.db_username = conf['DATABASE CONNECTION']['DB USERNAME']
-        self.db_password = conf['DATABASE CONNECTION']['DB PASSWORD']
-        self.db_port = conf['DATABASE CONNECTION']['DB PORT']
+    def load_conf(self, conf, database = 'DATABASE CONNECTION'):
+        self.db_host = conf[database]['DB HOST']
+        self.db_name = conf[database]['DB NAME']
+        self.db_username = conf[database]['DB USERNAME']
+        self.db_password = conf[database]['DB PASSWORD']
+        self.db_port = conf[database]['DB PORT']
 
     def connect_to_db(self):
         self.db_connection = psycopg2.connect(

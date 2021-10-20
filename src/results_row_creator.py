@@ -7,11 +7,11 @@ def get_len_filtered_data(data, filter_name, filter_value):
 
 class ResultsRowCreator:
 
-    def __init__(self, original_data = None, comparison_data = None, join_categories = None):
+    def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
         self.original_data = original_data
         self.comparison_data = comparison_data
         self.join_categories = join_categories
-        self.join_orig_comp_data(join_categories)
+        self.comparison_data_coef = comparison_data_coef
 
     def get_filtered_orig_data(self, filter_name, filter_value):
         return self.original_data[self.original_data[filter_name] == filter_value]
@@ -109,12 +109,17 @@ class ResultsRowCreator:
         
         return np.round([logarithmic_errors.mean(), stats.median_abs_deviation(logarithmic_errors)], round_decimal_places)
 
+    def multiply_comp_with_coef(self, indicator_name):
+        self.comparison_data[indicator_name] = self.comparison_data.loc[:, indicator_name].multiply(self.comparison_data_coef)
+
 class DomInbResultsRowCreator(ResultsRowCreator):
 
-    def __init__(self, original_data = None, comparison_data = None, join_categories = None):
+    def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
         super().__init__(original_data, comparison_data, join_categories)
 
     def get_row_of_statistics_wide(self, table_name, data_type, indicator_name, filter_name):
+        self.multiply_comp_with_coef(indicator_name)
+        self.join_orig_comp_data(self.join_categories)
         combination_coverage_array = [self.calculate_combination_coverage(filter_name, lau_level_int) for lau_level_int in range(1,4)]
         ks_test_array = [self.calculate_ks_test(indicator_name) for lau_level_int in range(1,4)]
         indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name) for lau_level_int in range(0,4)]
@@ -168,6 +173,8 @@ class DomInbResultsRowCreator(ResultsRowCreator):
         return results_dict
 
     def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name, lau_level_array):
+        self.multiply_comp_with_coef(indicator_name)
+        self.join_orig_comp_data(self.join_categories)
         combination_coverage_array = [self.calculate_combination_coverage(filter_name, lau_level_int) for lau_level_int in lau_level_array]
         ks_test_array = [self.calculate_ks_test(indicator_name, filter_name, lau_level_int) for lau_level_int in lau_level_array]
         indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name, filter_name, lau_level_int) for lau_level_int in lau_level_array]
@@ -195,10 +202,12 @@ class DomInbResultsRowCreator(ResultsRowCreator):
 
 class OutbResultsRowCreator(ResultsRowCreator):
 
-    def __init__(self, original_data = None, comparison_data = None, join_categories = None):
+    def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
         super().__init__(original_data, comparison_data, join_categories)
 
     def get_row_of_statistics_long(self, table_name, data_type, indicator_name):
+        self.multiply_comp_with_coef(indicator_name)
+        self.join_orig_comp_data(self.join_categories)
         combination_coverage_array = self.calculate_combination_coverage()
         ks_test_array = self.calculate_ks_test(indicator_name)
         indicator_mean = self.calculate_original_indicator_mean(indicator_name)

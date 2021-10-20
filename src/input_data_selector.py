@@ -24,5 +24,16 @@ class InputDataSelector:
     def get_sql_query(self):
         return self.query
 
-    def get_pandas_df_from_query(self, connection):
-        return pandas.read_sql_query(self.query, connection.db_connection)
+    def get_pandas_df_from_query(self, connection, query = None):
+        if query == None:
+            query = self.query
+        return pandas.read_sql_query(query, connection.db_connection)
+
+    def create_separate_queries(self):
+        sql_query_array = []
+
+        for (schema, type) in zip(self.data_schemas, self.data_types):
+            sql_query = '''SELECT *, '{ftype}' AS data_type FROM {fschema}.{ftablename}\n'''.format(fschema = schema, ftype = type, ftablename = self.table_name)
+            sql_query_array.append(sql_query)
+        
+        return sql_query_array

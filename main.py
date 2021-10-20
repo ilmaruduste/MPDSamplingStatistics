@@ -30,13 +30,21 @@ filename = current_time + "_" + conf['OUTPUT DATA']['FILENAME']
 output_path = os.path.join(conf['OUTPUT DATA']['FOLDER'], filename)
 
 print(f"Connecting to database {conf['DATABASE CONNECTION']['DB NAME']}...")
-with database_connector.DatabaseConnector() as connection:
-    connection.load_conf(conf)
+with database_connector.DatabaseConnector() as connection, database_connector.DatabaseConnector() as second_connection:
+    connection.load_conf(conf, 'DATABASE CONNECTION')
     connection.connect_to_db()
     print("Connection to database established!")
 
+    try:
+        second_connection.load_conf(conf, 'DATABASE CONNECTION 2')
+        second_connection.connect_to_db()
+        print("Connection to second database established!")
+
+    except:
+        print("Connection to second database NOT established!")
+
     print("Processing results...")
-    results_processor = results_processor.ResultsProcessor(conf, connection)
+    results_processor = results_processor.ResultsProcessor(conf, connection, second_connection)
     final_data = results_processor.process_results()
 
     print("Results processed!")

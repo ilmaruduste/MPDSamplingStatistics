@@ -4,6 +4,7 @@
 from src import results_row_creator
 import unittest
 import pandas as pd
+import numpy as np
 
 
 class TestResultsRowCreator(unittest.TestCase):
@@ -115,6 +116,11 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.joined_data['dummy_indicator_y'] = [9,19,93,499,599]
         self.assertAlmostEqual(self.rrc.calculate_absolute_logarithmic_error_metrics('dummy_indicator')[1], 0.5, places = 2)
 
+    def test_coef_multiplication(self):
+        self.rrc.comparison_data_coef = 2
+        self.rrc.multiply_comp_with_coef('dummy_indicator')
+        self.assertTrue(np.array_equal(self.rrc.comparison_data['dummy_indicator'], [20,40,60,100,140], equal_nan=True))
+
     def test_dominb_wide_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']
 
@@ -152,12 +158,25 @@ class TestResultsRowCreator(unittest.TestCase):
         lau_level_array = [0,1,2,3]
 
         self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
-        # print(f"self.dirrc.original_data: {self.dirrc.original_data}")
-        # print(f"self.dirrc.comparison_data: {self.dirrc.comparison_data}")
-        # print(f"self.dirrc.join_categories: {self.dirrc.join_categories}")
-        # print(f"self.dirrc.joined_data: {self.dirrc.joined_data}")
-        # print(f"manually joined data: {pd.merge(self.dirrc.original_data, self.dirrc.comparison_data, how = 'inner', on = join_categories)}")
         print(self.dirrc.get_row_of_statistics_long('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category', lau_level_array))
+
+    def test_outb_long_statistics(self):
+        join_categories = ['dummy_date', 'dummy_category']
+
+        original_df = pd.DataFrame(
+            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-01-01','2021-02-01','2021-01-01', '2021-02-01'],
+            'dummy_category':[0,1,1,1,1,2,2,3,3], 
+            'dummy_indicator':[5,10,20,30,40,50,60,70,80]})
+
+        comparison_df = pd.DataFrame(
+            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-01-01','2021-02-01', '2021-01-01', '2021-02-01'],
+            'dummy_category':[0,1,1,1,2,2,3,3],
+            'dummy_indicator': [5,10,20,30,50,70,80, 90]})
+
+        self.orrc = results_row_creator.OutbResultsRowCreator(original_df, comparison_df, join_categories)
+        print(self.orrc.get_row_of_statistics_long('dummy_table', 'dummy_data', 'dummy_indicator'))
+
+
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()

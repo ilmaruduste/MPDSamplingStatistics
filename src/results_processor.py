@@ -36,8 +36,8 @@ class ResultsProcessor:
         return pd.DataFrame(final_data_dict)
 
     def get_orig_comp_data(self, all_data, data_type):
-        original_data = all_data[all_data['data_type'] == self.data_types[0]]
-        comparison_data = all_data[all_data['data_type'] == data_type]
+        original_data = all_data[all_data['data_type'] == self.data_types[0]].copy()
+        comparison_data = all_data[all_data['data_type'] == data_type].copy()
         return original_data, comparison_data
 
     def get_correct_rrc(self, original_data, comparison_data, comparison_data_coef):

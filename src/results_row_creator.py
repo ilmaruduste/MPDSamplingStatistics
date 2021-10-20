@@ -110,12 +110,12 @@ class ResultsRowCreator:
         return np.round([logarithmic_errors.mean(), stats.median_abs_deviation(logarithmic_errors)], round_decimal_places)
 
     def multiply_comp_with_coef(self, indicator_name):
-        self.comparison_data[indicator_name] = self.comparison_data.loc[:, indicator_name].multiply(self.comparison_data_coef)
+        self.comparison_data.loc[:, indicator_name] = self.comparison_data.loc[:, indicator_name].multiply(self.comparison_data_coef)
 
 class DomInbResultsRowCreator(ResultsRowCreator):
 
     def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
-        super().__init__(original_data, comparison_data, join_categories)
+        super().__init__(original_data, comparison_data, join_categories, comparison_data_coef)
 
     def get_row_of_statistics_wide(self, table_name, data_type, indicator_name, filter_name):
         self.multiply_comp_with_coef(indicator_name)
@@ -203,7 +203,7 @@ class DomInbResultsRowCreator(ResultsRowCreator):
 class OutbResultsRowCreator(ResultsRowCreator):
 
     def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
-        super().__init__(original_data, comparison_data, join_categories)
+        super().__init__(original_data, comparison_data, join_categories, comparison_data_coef)
 
     def get_row_of_statistics_long(self, table_name, data_type, indicator_name):
         self.multiply_comp_with_coef(indicator_name)

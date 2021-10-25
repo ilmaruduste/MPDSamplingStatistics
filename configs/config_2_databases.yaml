@@ -5,8 +5,15 @@ DATABASE CONNECTION:
   DB PASSWORD: 'dummy_password'
   DB PORT: '5432'
 
+DATABASE CONNECTION2:
+  DB HOST: 'localhost'
+  DB NAME: 'dummy_other_database'
+  DB USERNAME: 'dummy_other_user'
+  DB PASSWORD: 'dummy_other_password'
+  DB PORT: '5432'
+
 INPUT DATA:
-  DATA SCHEMAS: ['du_dummy_results', 'du_dummy_results_sampled']  # The first schema here is the one the other schemas are compared to. NB! There should be as many Data Schemas as corresponding types!
+  DATA SCHEMAS: ['du_dummy_results', 'du_dummy_results']  # The first schema here is the one the other schemas are compared to. NB! There should be as many Data Schemas as corresponding types!
   CORRESPONDING TYPES: ['100% data', '5% data']                   # Type of sample/compression on data. E.g. '5% data' or '100% PIPE1 data'
   TABLE NAMES: ['dummy_results_table', 'dummy_results_table_2']   # The names of the tables to be analyzed
   INDICATORS: ['unique_visitor_cnt', 'trip_present_cnt']          # Indicators in the tables to analyze

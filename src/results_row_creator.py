@@ -172,7 +172,7 @@ class DomInbResultsRowCreator(ResultsRowCreator):
 
         return results_dict
 
-    def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name, filter_value_array):
+    def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name = None, filter_value_array = None):
         if filter_name == None:
             results_dict = self.get_row_of_statistics_long_without_filter(table_name, data_type, indicator_name)
         else:
@@ -235,7 +235,7 @@ class DomInbResultsRowCreator(ResultsRowCreator):
 
         return results_dict
 
-        
+
 class OutbResultsRowCreator(ResultsRowCreator):
 
     def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):

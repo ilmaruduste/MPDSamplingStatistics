@@ -37,16 +37,16 @@ class TestResultsRowCreator(unittest.TestCase):
             'dummy_indicator_y':[10,20,30,50,70]})
         self.rrc.join_orig_comp_data(join_categories)
 
-    def test_combination_coverage_without_filter(self):
+    def test_combination_coverage_without_group(self):
         self.assertEqual(self.rrc.calculate_combination_coverage(), round(5/7, 4))
 
-    def test_combination_coverage_with_filter_1(self):
+    def test_combination_coverage_with_group_1(self):
         self.assertEqual(self.rrc.calculate_combination_coverage('dummy_category', 1), 0.75)
 
-    def test_combination_coverage_with_filter_2(self):
+    def test_combination_coverage_with_group_2(self):
         self.assertEqual(self.rrc.calculate_combination_coverage('dummy_category', 2), 1)
 
-    def test_combination_coverage_with_filter_3(self):
+    def test_combination_coverage_with_group_3(self):
         self.assertEqual(self.rrc.calculate_combination_coverage('dummy_category', 3), 0)
 
     def test_ks_test_0(self):
@@ -56,15 +56,15 @@ class TestResultsRowCreator(unittest.TestCase):
     def test_ks_test_1(self):
         self.assertAlmostEqual(self.rrc.calculate_ks_test('dummy_indicator')[1], 1, places = 2)
 
-    def test_ks_test_1_filter(self):
+    def test_ks_test_1_group(self):
         self.rrc.comparison_data['dummy_indicator'] = [10,20,30,0,0]
-        self.assertAlmostEqual(self.rrc.calculate_ks_test('dummy_indicator', filter_name='dummy_category', filter_value=1)[1], 1, places = 2)
+        self.assertAlmostEqual(self.rrc.calculate_ks_test('dummy_indicator', group_name='dummy_category', group_value=1)[1], 1, places = 2)
 
     def test_original_indicator_mean(self):
         self.assertEqual(self.rrc.calculate_original_indicator_mean('dummy_indicator'), 40)
 
-    def test_original_indicator_mean_filter(self):
-        self.assertEqual(self.rrc.calculate_original_indicator_mean('dummy_indicator', filter_name = 'dummy_category', filter_value = 1), 25)
+    def test_original_indicator_mean_group(self):
+        self.assertEqual(self.rrc.calculate_original_indicator_mean('dummy_indicator', group_name = 'dummy_category', group_value = 1), 25)
 
     def test_original_indicator_mad(self):
         self.assertEqual(self.rrc.calculate_original_indicator_mad('dummy_indicator'), 20)
@@ -81,13 +81,13 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.joined_data['dummy_indicator_y'] = [0,0,0,0,0]
         self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator')[0], 100)
 
-    def test_mean_absolute_percentage_error_50_filter(self):
+    def test_mean_absolute_percentage_error_50_group(self):
         self.rrc.joined_data['dummy_indicator_y'] = [5,10,15,50,60]
-        self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', filter_name = 'dummy_category', filter_value = 1)[0], 50)
+        self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', group_name = 'dummy_category', group_value = 1)[0], 50)
 
-    def test_mean_absolute_percentage_error_200_filter(self):
+    def test_mean_absolute_percentage_error_200_group(self):
         self.rrc.joined_data['dummy_indicator_y'] = [5,10,15,150,180]
-        self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', filter_name = 'dummy_category', filter_value = 2)[0], 200)
+        self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', group_name = 'dummy_category', group_value = 2)[0], 200)
 
     def test_mad_absolute_percentage_error_0(self):
         self.rrc.joined_data['dummy_indicator_y'] = [10,20,30,50,60]
@@ -97,10 +97,10 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.joined_data['dummy_indicator_y'] = [10,20,15,100,120]
         self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator')[1], 50)
 
-    def test_mad_absolute_percentage_error_0_filter(self):
+    def test_mad_absolute_percentage_error_0_group(self):
         # This test works since it's MEDIAN and not MEAN absolute deviation
         self.rrc.joined_data['dummy_indicator_y'] = [4,20,30,100,120]
-        self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', filter_name = 'dummy_category', filter_value = 1)[1], 0)
+        self.assertEqual(self.rrc.calculate_absolute_percentage_error_metrics('dummy_indicator', group_name = 'dummy_category', group_value = 1)[1], 0)
 
     def test_mean_ale_0(self):
         self.rrc.joined_data['dummy_indicator_y'] = [10,20,30,50,60]
@@ -139,7 +139,7 @@ class TestResultsRowCreator(unittest.TestCase):
         self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
         print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category', lau_level_array))
 
-    def test_dominb_without_filter_statistics(self):
+    def test_dominb_without_group_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']
 
         original_df = pd.DataFrame(

@@ -117,15 +117,15 @@ class DomInbResultsRowCreator(ResultsRowCreator):
     def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
         super().__init__(original_data, comparison_data, join_categories, comparison_data_coef)
 
-    def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name = None, filter_value_array = None):
+    def get_row_of_statistics(self, table_name, data_type, indicator_name, filter_name = None, filter_value_array = None):
         if filter_name == None:
-            results_dict = self.get_row_of_statistics_long_without_filter(table_name, data_type, indicator_name)
+            results_dict = self.get_row_of_statistics_without_filter(table_name, data_type, indicator_name)
         else:
-            results_dict = self.get_row_of_statistics_long_with_filter(table_name, data_type, indicator_name, filter_name, filter_value_array)
+            results_dict = self.get_row_of_statistics_with_filter(table_name, data_type, indicator_name, filter_name, filter_value_array)
 
         return results_dict
 
-    def get_row_of_statistics_long_with_filter(self, table_name, data_type, indicator_name, filter_name, filter_value_array):
+    def get_row_of_statistics_with_filter(self, table_name, data_type, indicator_name, filter_name, filter_value_array):
         self.multiply_comp_with_coef(indicator_name)
         self.join_orig_comp_data(self.join_categories)
         combination_coverage_array = [self.calculate_combination_coverage(filter_name, filter_value) for filter_value in filter_value_array]
@@ -153,7 +153,7 @@ class DomInbResultsRowCreator(ResultsRowCreator):
         
         return results_dict
 
-    def get_row_of_statistics_long_without_filter(self, table_name, data_type, indicator_name):
+    def get_row_of_statistics_without_filter(self, table_name, data_type, indicator_name):
         self.multiply_comp_with_coef(indicator_name)
         self.join_orig_comp_data(self.join_categories)
         combination_coverage_array = self.calculate_combination_coverage()
@@ -186,7 +186,7 @@ class OutbResultsRowCreator(ResultsRowCreator):
     def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
         super().__init__(original_data, comparison_data, join_categories, comparison_data_coef)
 
-    def get_row_of_statistics_long(self, table_name, data_type, indicator_name):
+    def get_row_of_statistics(self, table_name, data_type, indicator_name):
         self.multiply_comp_with_coef(indicator_name)
         self.join_orig_comp_data(self.join_categories)
         combination_coverage_array = self.calculate_combination_coverage()

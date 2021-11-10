@@ -51,13 +51,13 @@ class ResultsProcessor:
         if self.filter_name == "":  
             final_data_dict = self.merge_dict(
                             final_data_dict, 
-                            rrc.get_row_of_statistics_long(table_name, data_type, indicator)
+                            rrc.get_row_of_statistics(table_name, data_type, indicator)
                             )
                         
         else:
             final_data_dict = self.merge_dict(
                             final_data_dict, 
-                            rrc.get_row_of_statistics_long(table_name, data_type, indicator, self.filter_name, self.filter_values)
+                            rrc.get_row_of_statistics(table_name, data_type, indicator, self.filter_name, self.filter_values)
                             )
                 
         return final_data_dict

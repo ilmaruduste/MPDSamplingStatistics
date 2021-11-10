@@ -121,7 +121,7 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.multiply_comp_with_coef('dummy_indicator')
         self.assertTrue(np.array_equal(self.rrc.comparison_data['dummy_indicator'], [20,40,60,100,140], equal_nan=True))
 
-    def test_dominb_long_statistics(self):
+    def test_dominb_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']
 
         original_df = pd.DataFrame(
@@ -137,9 +137,9 @@ class TestResultsRowCreator(unittest.TestCase):
         lau_level_array = [0,1,2,3]
 
         self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
-        print(self.dirrc.get_row_of_statistics_long('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category', lau_level_array))
+        print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category', lau_level_array))
 
-    def test_dominb_long_without_filter_statistics(self):
+    def test_dominb_without_filter_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']
 
         original_df = pd.DataFrame(
@@ -153,9 +153,9 @@ class TestResultsRowCreator(unittest.TestCase):
             'dummy_indicator': [5,10,20,30,50,70,80, 90]})
 
         self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
-        print(self.dirrc.get_row_of_statistics_long('dummy_table', 'dummy_data', 'dummy_indicator'))
+        print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator'))
     
-    def test_outb_long_statistics(self):
+    def test_outb_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']
 
         original_df = pd.DataFrame(
@@ -169,7 +169,7 @@ class TestResultsRowCreator(unittest.TestCase):
             'dummy_indicator': [5,10,20,30,50,70,80, 90]})
 
         self.orrc = results_row_creator.OutbResultsRowCreator(original_df, comparison_df, join_categories)
-        print(self.orrc.get_row_of_statistics_long('dummy_table', 'dummy_data', 'dummy_indicator'))
+        print(self.orrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator'))
 
 
 

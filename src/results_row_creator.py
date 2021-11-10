@@ -120,12 +120,12 @@ class DomInbResultsRowCreator(ResultsRowCreator):
     def get_row_of_statistics_wide(self, table_name, data_type, indicator_name, filter_name):
         self.multiply_comp_with_coef(indicator_name)
         self.join_orig_comp_data(self.join_categories)
-        combination_coverage_array = [self.calculate_combination_coverage(filter_name, lau_level_int) for lau_level_int in range(1,4)]
-        ks_test_array = [self.calculate_ks_test(indicator_name) for lau_level_int in range(1,4)]
-        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name) for lau_level_int in range(0,4)]
-        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name) for lau_level_int in range(0,4)]
-        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name) for lau_level_int in range(0,4)]).T
-        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name) for lau_level_int in range(0,4)]).T
+        combination_coverage_array = [self.calculate_combination_coverage(filter_name, filter_value) for filter_value in range(1,4)]
+        ks_test_array = [self.calculate_ks_test(indicator_name) for filter_value in range(1,4)]
+        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name) for filter_value in range(0,4)]
+        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name) for filter_value in range(0,4)]
+        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name) for filter_value in range(0,4)]).T
+        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name) for filter_value in range(0,4)]).T
         
         results_dict = {
             'table_name':table_name
@@ -183,18 +183,18 @@ class DomInbResultsRowCreator(ResultsRowCreator):
     def get_row_of_statistics_long_with_filter(self, table_name, data_type, indicator_name, filter_name, filter_value_array):
         self.multiply_comp_with_coef(indicator_name)
         self.join_orig_comp_data(self.join_categories)
-        combination_coverage_array = [self.calculate_combination_coverage(filter_name, lau_level_int) for lau_level_int in filter_value_array]
-        ks_test_array = [self.calculate_ks_test(indicator_name, filter_name, lau_level_int) for lau_level_int in filter_value_array]
-        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name, filter_name, lau_level_int) for lau_level_int in filter_value_array]
-        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name, filter_name, lau_level_int) for lau_level_int in filter_value_array]
-        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name, filter_name, lau_level_int) for lau_level_int in filter_value_array]).T
-        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name, filter_name, lau_level_int) for lau_level_int in filter_value_array]).T
+        combination_coverage_array = [self.calculate_combination_coverage(filter_name, filter_value) for filter_value in filter_value_array]
+        ks_test_array = [self.calculate_ks_test(indicator_name, filter_name, filter_value) for filter_value in filter_value_array]
+        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name, filter_name, filter_value) for filter_value in filter_value_array]
+        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name, filter_name, filter_value) for filter_value in filter_value_array]
+        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name, filter_name, filter_value) for filter_value in filter_value_array]).T
+        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name, filter_name, filter_value) for filter_value in filter_value_array]).T
 
         results_dict = {
             'table_name': np.repeat([table_name], len(filter_value_array))
             , 'data_type': np.repeat([data_type], len(filter_value_array))
             , 'indicator': np.repeat([indicator_name], len(filter_value_array))
-            , 'lau_level': filter_value_array
+            , filter_name: filter_value_array
             , 'combination_coverage': combination_coverage_array
             , 'ks_test_D': np.array(ks_test_array).T[0]
             , 'ks_test_p': np.array(ks_test_array).T[1]

@@ -117,61 +117,6 @@ class DomInbResultsRowCreator(ResultsRowCreator):
     def __init__(self, original_data = None, comparison_data = None, join_categories = None, comparison_data_coef = 1):
         super().__init__(original_data, comparison_data, join_categories, comparison_data_coef)
 
-    def get_row_of_statistics_wide(self, table_name, data_type, indicator_name, filter_name):
-        self.multiply_comp_with_coef(indicator_name)
-        self.join_orig_comp_data(self.join_categories)
-        combination_coverage_array = [self.calculate_combination_coverage(filter_name, filter_value) for filter_value in range(1,4)]
-        ks_test_array = [self.calculate_ks_test(indicator_name) for filter_value in range(1,4)]
-        indicator_mean_array = [self.calculate_original_indicator_mean(indicator_name) for filter_value in range(0,4)]
-        indicator_mad_array = [self.calculate_original_indicator_mad(indicator_name) for filter_value in range(0,4)]
-        ape_metrics_array = np.array([self.calculate_absolute_percentage_error_metrics(indicator_name) for filter_value in range(0,4)]).T
-        ale_metrics_array = np.array([self.calculate_absolute_logarithmic_error_metrics(indicator_name) for filter_value in range(0,4)]).T
-        
-        results_dict = {
-            'table_name':table_name
-            , 'data_type': data_type
-            , 'indicator': indicator_name
-            , 'combination_coverage_mean': np.array(combination_coverage_array).mean()
-            , 'cc_lau1': combination_coverage_array[0]
-            , 'cc_lau2': combination_coverage_array[1]
-            , 'cc_lau3': combination_coverage_array[2]
-            , 'ks_test_p_general': self.calculate_ks_test(indicator_name)[1]
-            , 'ks_test_D_general': self.calculate_ks_test(indicator_name)[0]
-            , 'ks_test_p_lau1': ks_test_array[0][0]
-            , 'ks_test_p_lau2': ks_test_array[1][0]
-            , 'ks_test_p_lau3': ks_test_array[2][0]
-            , 'indicator_mean_lau0': indicator_mean_array[0]
-            , 'indicator_mad_lau0': indicator_mad_array[0]
-            , 'indicator_mean_lau1': indicator_mean_array[1]
-            , 'indicator_mad_lau1': indicator_mad_array[1]
-            , 'indicator_mean_lau2': indicator_mean_array[2]
-            , 'indicator_mad_lau2': indicator_mad_array[2]
-            , 'indicator_mean_lau3': indicator_mean_array[3]
-            , 'indicator_mad_lau3': indicator_mad_array[3]
-            , 'APE_mean' : np.array(ape_metrics_array[0]).mean()
-            , 'APE_mad' : np.array(ape_metrics_array[1]).mean()
-            , 'APE_mean_lau0': np.array(ape_metrics_array[0][0])
-            , 'APE_mad_lau0': np.array(ape_metrics_array[1][0])
-            , 'APE_mean_lau1': np.array(ape_metrics_array[0][1])
-            , 'APE_mad_lau1': np.array(ape_metrics_array[1][2])
-            , 'APE_mean_lau2': np.array(ape_metrics_array[0][2])
-            , 'APE_mad_lau2': np.array(ape_metrics_array[1][2])
-            , 'APE_mean_lau3': np.array(ape_metrics_array[0][3])
-            , 'APE_mad_lau3': np.array(ape_metrics_array[1][3])
-            , 'ALE_mean' : np.array(ale_metrics_array[0]).mean()
-            , 'ALE_mad' : np.array(ale_metrics_array[1]).mean()
-            , 'ALE_mean_lau0': np.array(ale_metrics_array[0][0])
-            , 'ALE_mad_lau0': np.array(ale_metrics_array[1][0])
-            , 'ALE_mean_lau1': np.array(ale_metrics_array[0][1])
-            , 'ALE_mad_lau1': np.array(ale_metrics_array[1][2])
-            , 'ALE_mean_lau2': np.array(ale_metrics_array[0][2])
-            , 'ALE_mad_lau2': np.array(ale_metrics_array[1][2])
-            , 'ALE_mean_lau3': np.array(ale_metrics_array[0][3])
-            , 'ALE_mad_lau3': np.array(ale_metrics_array[1][3])
-        }
-
-        return results_dict
-
     def get_row_of_statistics_long(self, table_name, data_type, indicator_name, filter_name = None, filter_value_array = None):
         if filter_name == None:
             results_dict = self.get_row_of_statistics_long_without_filter(table_name, data_type, indicator_name)

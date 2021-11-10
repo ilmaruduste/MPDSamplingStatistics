@@ -121,27 +121,6 @@ class TestResultsRowCreator(unittest.TestCase):
         self.rrc.multiply_comp_with_coef('dummy_indicator')
         self.assertTrue(np.array_equal(self.rrc.comparison_data['dummy_indicator'], [20,40,60,100,140], equal_nan=True))
 
-    def test_dominb_wide_statistics(self):
-        join_categories = ['dummy_date', 'dummy_category']
-
-        original_df = pd.DataFrame(
-            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-01-01','2021-02-01','2021-01-01', '2021-02-01'],
-            'dummy_category':[0,1,1,1,1,2,2,3,3], 
-            'dummy_indicator':[5,10,20,30,40,50,60,70,80]})
-
-        comparison_df = pd.DataFrame(
-            {'dummy_date':['2021-01-01', '2021-01-01', '2021-02-01', '2021-03-01', '2021-01-01','2021-02-01', '2021-01-01', '2021-02-01'],
-            'dummy_category':[0,1,1,1,2,2,3,3],
-            'dummy_indicator': [5,10,20,30,50,70,80, 90]})
-        
-        self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
-        # print(f"self.dirrc.original_data: {self.dirrc.original_data}")
-        # print(f"self.dirrc.comparison_data: {self.dirrc.comparison_data}")
-        # print(f"self.dirrc.join_categories: {self.dirrc.join_categories}")
-        # print(f"self.dirrc.joined_data: {self.dirrc.joined_data}")
-        # print(f"manually joined data: {pd.merge(self.dirrc.original_data, self.dirrc.comparison_data, how = 'inner', on = join_categories)}")
-        print(self.dirrc.get_row_of_statistics_wide('dummy_table', 'dummy_data', 'dummy_indicator', 'dummy_category'))
-
     def test_dominb_long_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']
 

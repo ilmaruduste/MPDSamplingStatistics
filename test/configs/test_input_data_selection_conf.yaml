@@ -12,8 +12,8 @@ INPUT DATA:
   INDICATORS: []
   DATA SOURCE: 'DomesticInbound' # Options 'DomesticInbound' and 'Outbound'
   JOIN CATEGORIES: ['dummy_date', 'dummy_category']
-  FILTER NAME: 'lau_level' 
-  FILTER VALUES: [0,1,2,3]
+  GROUP NAME: ['lau_level'] 
+  GROUP VALUES: [[0,1,2,3]]
 
 OUTPUT DATA:
   FOLDER: './output'

@@ -22,7 +22,7 @@ class TestInputDataSelection(unittest.TestCase):
         self.ids.data_types = ['100% data']
         self.ids.table_name = "dummy_table"
 
-        correct_query = '''SELECT *, '100% data' AS data_type FROM dummy_schema.dummy_table\n'''
+        correct_query = '''SELECT 'dummy_category', 'dummy_date', 'lau_level', '100% data' AS data_type FROM dummy_schema.dummy_table\n'''
 
         self.ids.create_sql_query()
         self.assertEqual(self.ids.query, correct_query)
@@ -32,7 +32,7 @@ class TestInputDataSelection(unittest.TestCase):
         self.ids.data_types = ['100% data', '5% data']
         self.ids.table_name = "dummy_table"
 
-        correct_query = '''SELECT *, '100% data' AS data_type FROM dummy_schema1.dummy_table\nUNION\nSELECT *, '5% data' AS data_type FROM dummy_schema2.dummy_table\n'''
+        correct_query = '''SELECT 'dummy_category', 'dummy_date', 'lau_level', '100% data' AS data_type FROM dummy_schema1.dummy_table\nUNION ALL\nSELECT 'dummy_category', 'dummy_date', 'lau_level', '5% data' AS data_type FROM dummy_schema2.dummy_table\n'''
 
         self.ids.create_sql_query()
         self.assertEqual(self.ids.query, correct_query)
@@ -42,7 +42,7 @@ class TestInputDataSelection(unittest.TestCase):
         self.ids.data_types = ['100% data', '5% data', "1% data"]
         self.ids.table_name = "dummy_table"        
 
-        correct_query = '''SELECT *, '100% data' AS data_type FROM dummy_schema1.dummy_table\nUNION\nSELECT *, '5% data' AS data_type FROM dummy_schema2.dummy_table\nUNION\nSELECT *, '1% data' AS data_type FROM dummy_schema3.dummy_table\n'''
+        correct_query = '''SELECT 'dummy_category', 'dummy_date', 'lau_level', '100% data' AS data_type FROM dummy_schema1.dummy_table\nUNION ALL\nSELECT 'dummy_category', 'dummy_date', 'lau_level', '5% data' AS data_type FROM dummy_schema2.dummy_table\nUNION ALL\nSELECT 'dummy_category', 'dummy_date', 'lau_level', '1% data' AS data_type FROM dummy_schema3.dummy_table\n'''
 
         self.ids.create_sql_query()
         self.assertEqual(self.ids.query, correct_query)

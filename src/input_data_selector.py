@@ -35,7 +35,7 @@ class InputDataSelector:
         sql_query_array = []
 
         for (schema, type) in zip(self.data_schemas, self.data_types):
-            sql_query = '''SELECT *, '{ftype}' AS data_type FROM {fschema}.{ftablename}\n'''.format(fschema = schema, ftype = type, ftablename = self.table_name)
+            sql_query = '''SELECT *, "{ftype}" AS data_type FROM {fschema}.{ftablename}\n'''.format(fschema = schema, ftype = type, ftablename = self.table_name)
             sql_query_array.append(sql_query)
         
         return sql_query_array
@@ -45,7 +45,7 @@ class InputDataSelector:
         column_list.sort()
         column_string = ""
         for col_index, col in enumerate(column_list):
-            column_string += "'{column}'".format(column = col)
+            column_string += '"{column}"'.format(column = col)
             if col_index < len(column_list) - 1:
                 column_string += ", "
 

@@ -20,7 +20,6 @@ INPUT DATA:
   DATA SOURCE: 'DomesticInbound'                                  # Options 'DomesticInbound' and 'Outbound'
   JOIN CATEGORIES: ['lau_id', 'lau_level','period']               # The combinations that make up a unique row in a table. These fields are used to join values from one table to another.
   FILTER NAME: ['lau_level']            # If this has a value, then an extra grouping is made into the output file and FILTER VALUES are looped through with the group
-  FILTER VALUES: [[1,2]]                # These values are used for grouping the analysis.
   COEF VALUES: [1,20]                 # All indicators in tables get multiplied by the coef (coefs here correspond to data schemas and therefore data types)
 
 OUTPUT DATA:

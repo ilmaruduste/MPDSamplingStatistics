@@ -12,7 +12,6 @@ class ResultsProcessor:
         self.data_source = conf['INPUT DATA']['DATA SOURCE']
         self.join_categories = conf['INPUT DATA']['JOIN CATEGORIES']
         self.group_name = conf['INPUT DATA']['GROUP NAME']
-        self.group_values = conf['INPUT DATA']['GROUP VALUES']
         self.coef_array = conf['INPUT DATA']['COEF VALUES']
         self.connection = connection
         self.second_connection = second_connection
@@ -57,7 +56,7 @@ class ResultsProcessor:
         else:
             final_data_dict = self.merge_dict(
                             final_data_dict, 
-                            rrc.get_row_of_statistics(table_name, data_type, indicator, self.group_name, self.group_values)
+                            rrc.get_row_of_statistics(table_name, data_type, indicator, self.group_name)
                             )
                 
         return final_data_dict

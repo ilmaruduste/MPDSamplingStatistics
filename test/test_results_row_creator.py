@@ -137,7 +137,7 @@ class TestResultsRowCreator(unittest.TestCase):
         lau_level_array = [0,1,2,3]
 
         self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
-        print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator', ['dummy_category'], [lau_level_array]))
+        print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator', ['dummy_category']))
 
     def test_dominb_statistics_2_groups(self):
         join_categories = ['dummy_date', 'group1', 'group2']
@@ -158,7 +158,7 @@ class TestResultsRowCreator(unittest.TestCase):
         group2_array = ["a","b"]
 
         self.dirrc = results_row_creator.DomInbResultsRowCreator(original_df, comparison_df, join_categories)
-        print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator', ['group1', 'group2'], [group1_array, group2_array]))
+        print(self.dirrc.get_row_of_statistics('dummy_table', 'dummy_data', 'dummy_indicator', ['group1', 'group2']))
 
     def test_dominb_without_group_statistics(self):
         join_categories = ['dummy_date', 'dummy_category']

@@ -1,12 +1,16 @@
 # MPDSamplingStatistics
-This program is a tool to compare different MPD based results between eachother, conduct statistical tests and output a .csv file with different statistical indicators.
+This program is a tool to compare different Mobile Positioning Data (MPD) based results between eachother, conduct statistical tests and output a .csv file with different statistical indicators.
 
 ## Input
+
+In order to compare two or more sets of results to the first set of results, two databases or multiple schemas in one database are used. The choice of databases/schemas is specified in the config file, but <b>the format of the tables should be the same for different sets of results </b>(otherwise you couldn't compare them).
 
 Many forms of tables are suitable for input in this program. The following is one example:
 ![An example of input results](./pictures/dummy_input_results.png)
 
-...where 'lau_id' is the id of the municipality that has a particular indicator, 'lau_level' refers to the local administrative unit level of a select country, period refers to the time of the particular indicator, and 'unique_visitor_cnt' and 'trip_cnt' are the indicators or 'results' that will be compared between two tables.
+...where `lau_id` is the id of the administrative unit that has a particular indicator, `lau_level` refers to the local administrative unit level of a select country, period refers to the time of the particular indicator, and `unique_visitor_cnt` and `trip_cnt` are the indicators or 'results' that will be compared between two tables.
+
+One script could compare multiple tables from multiple schemas to a set of original results with the same number of tables.
 
 ## Output
 
@@ -22,10 +26,23 @@ To run the program, navigate to the project directory in your terminal and run t
 
     python main.py -c ./configs/your_config_name_here.yaml
 
-This will produce an output file with a path that is specified in the config. <b>NB!</b> You will have to create your own config, as every database connection and setup is different. Two configs 'config.yaml' and 'config_2_databases.yaml' are in the ./configs folder as examplesof how to build a config.
+This will produce an output file with a path that is specified in the config. <b>NB!</b> You will have to create your own config, as every database connection and setup is different. Two configs 'config.yaml' and 'config_2_databases.yaml' are in the ./configs folder as examples of how to build a config.
 
-## Testing
-To run the tests for this program, navigate to the main directory and run the following:
+You can also specify the maximum amount of memory to be used by the script in GBs. <b>NB!</b> This feature only works on Linux-based machines (so not on MacOS nor Windows). Here's an example that would allocate 16 GBs of memory:
+
+    python main.py -c ./configs/your_config_name_here.yaml -m 16
+
+## Requirements
+<ul>
+    <li>Python 3.7+</li>
+    <ul>
+        <li>pandas, pyyaml, psycopg2, scipy</li>
+    </ul>
+    <li>PSQL server with input data</li>
+</ul>
+
+## Testing (for developers)
+To run the unittests for this program (development case), navigate to the main directory and run the following:
         
     python -m unittest
 

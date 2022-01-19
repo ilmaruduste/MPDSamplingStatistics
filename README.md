@@ -21,6 +21,8 @@ An example of an output file is the following:
 
 The description of statistical tests and parameters is below the heading 'Statistical Tests'.
 
+An example of visualizing output files is given in the Jupyter Notebook `results_visualization_example.ipynb` that is located in the main folder.
+
 ## Running
 To run the program, navigate to the project directory in your terminal and run the following command:
 
